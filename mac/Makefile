@@ -16,6 +16,21 @@ all:
 	@echo Done
 	./ant 10000
 
+LIBXLINUX = minilibx-linux
+LIBSLINUX = minilibx-linux/libmlx.a -L$(LIBXLINUX)
+INCSLINUX = -I$(LIBXLINUX) -I$(INC)
+FLAGSLINUX = $(INCSLINUX) $(LIBSLINUX) -lXext -lX11 -lm -lz
+
+linux:
+	@clear
+	@echo -n Compiling minilibx...
+	@make -s -C $(LIBXLINUX)
+	@echo Done
+	@echo -n Compiling ant_sim...
+	@gcc $(SRC) $(FLAGSLINUX) -o $(NAME)
+	@echo Done
+	./ant 10000
+
 git:
 	@cd ../ && $(MAKE) git
 

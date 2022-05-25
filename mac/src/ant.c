@@ -12,44 +12,43 @@
 
 #include "so_long.h"
 
-float	sense(r_render *r, t_ant *ant, int x, int y)
+float	sense(t_render *r, t_ant *ant, int x, int y, int size)
 {
 	float	sum = 0;
-	float	size = 1;
-	int		x;
-	int		y;
+	int		px;
+	int		py;
 
 	for (int offsetX = -size; offsetX <= size; offsetX++)
 	{
 		for (int offsety = -size; offsety <= size; offsety++)
 		{
-			x = x + offsetX;
-			y = y + offsety;
-			sum += pixel_get(r, x, y);
+			px = x + offsetX;
+			py = y + offsety;
+			sum += pixel_get(r, px, py);
 		}
 	}
 	return (sum);
 }
 
-void	box(t_ant *ant)
+void	box(t_ant *ant, t_render *r)
 {
 	if (ant->x < 10 || ant->x > r->w - 10)
 	{
 		ant->dir = 180 - ant->dir;
-		ant->x += steps * cos(ant->dir * 3.14 / 180);
-		ant->y += steps * sin(ant->dir * 3.14 / 180);
+		ant->x += cos(ant->dir * 3.14 / 180);
+		ant->y += sin(ant->dir * 3.14 / 180);
 	}
 	else if (ant->y < 10 || ant->y > r->h - 10)
 	{
 		ant->dir = 360 - ant->dir;
-		ant->x += steps * cos(ant->dir * 3.14 / 180);
-		ant->y += steps * sin(ant->dir * 3.14 / 180);
+		ant->x += cos(ant->dir * 3.14 / 180);
+		ant->y += sin(ant->dir * 3.14 / 180);
 	}
 }
 
-void	open_box(t_ant *ant)
+void	open_box(t_ant *ant, t_render *r)
 {
-		if (ant->x < 10)
+	if (ant->x < 10)
 		ant->x = r->w - 15;
 	else if (ant->x > r->w - 10)
 		ant->x = 15;
@@ -70,22 +69,27 @@ void	circle(t_ant *ant)
 
 void	run_ant(t_ant *ant, t_render *r)
 {
-	double	steps = 1;
-	int	left;
-	int	right;
-	int	ford;
-	int	turnSpeed = 1;
+	float	left;
+	float	right;
+	float	ford;
+	float	turnSpeed = 9000;
+	double	steps = .5;
+	int		spacing = 5;
+	int		distance = 5;
+	int		size = 5;
 
 	ant->x += steps * cos(ant->dir * 3.14 / 180);
 	ant->y += steps * sin(ant->dir * 3.14 / 180);
-	open_box(ant);
-	ford = sense(r, ant, ant->x + steps * cos(ant->dir * 3.14 / 180), ant->y + steps * sin(ant->dir * 3.14 / 180) + 3);
-	left = sense(r, ant, ant->x + steps * cos(ant->dir * 3.14 / 180) - 3, ant->y + steps * sin(ant->dir * 3.14 / 180) + 3);
-	right = sense(r, ant, ant->x + steps * cos(ant->dir * 3.14 / 180) + 3, ant->y + steps * sin(ant->dir * 3.14 / 180) + 3);
-	if (right > left)
-		ant->dir -= turnSpeed;
+	open_box(ant, r);
+	ford = sense(r, ant, ant->x + steps * cos(ant->dir * 3.14 / 180), ant->y + steps * sin(ant->dir * 3.14 / 180) + distance, size);
+	left = sense(r, ant, ant->x + steps * cos(ant->dir * 3.14 / 180) - spacing, ant->y + steps * sin(ant->dir * 3.14 / 180) + distance, size);
+	right = sense(r, ant, ant->x + steps * cos(ant->dir * 3.14 / 180) + spacing, ant->y + steps * sin(ant->dir * 3.14 / 180) + distance, size);
+	if (ford > right && ford > left)
+		ant->dir += 0;
+	else if (right > left)
+		ant->dir -=  right / turnSpeed;
 	else if (right < left)
-		ant->dir += turnSpeed;
+		ant->dir += left / turnSpeed;
 	//ant->dir += (left - right) / 10;
 	pixel_put(r, ant->x, ant->y, 0x000000FF);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jgobbett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 05:57:49 by jgobbett          #+#    #+#             */
-/*   Updated: 2022/05/25 19:50:52 by marvin           ###   ########.fr       */
+/*   Updated: 2022/05/25 14:24:30 by jgobbett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,9 @@ t_ant	*spawn_ant(t_render *r, int num)
 	i = -1;
 	while (++i < num / 2)
 	{
-		ants[i].x = (rand() % 950) + 10;
-		ants[i].y = (rand() % 950) + 10;
-		ants[i].dir = rand();
+		ants[i].x = 500;//(rand() % 950) + 10;
+		ants[i].y = 500;//(rand() % 950) + 10;
+		ants[i].dir = i;
 	}
 	while (++i < num)
 	{
@@ -107,7 +107,7 @@ void	evap_trail(t_render *r)
 			{
 				color = pixel_get(r, j, i);
 				if (color > 0)
-					color /= 1.01;
+					color /= 1.05;
 				pixel_put(r, j, i, color);
 			}
 		}
