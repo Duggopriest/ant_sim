@@ -6,7 +6,7 @@
 /*   By: jgobbett <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 05:57:49 by jgobbett          #+#    #+#             */
-/*   Updated: 2022/05/25 14:24:30 by jgobbett         ###   ########.fr       */
+/*   Updated: 2022/05/25 15:16:19 by jgobbett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,11 @@ void	pixel_put(t_render *r, int x, int y, int color)
 {
 	char	*dst;
 
-	dst = r->addr + (y * r->line_length + x * (r->bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
+	if (x > 0 && y > 0 && x < r->w && y < r->h)
+	{
+		dst = r->addr + (y * r->line_length + x * (r->bits_per_pixel / 8));
+		*(unsigned int *)dst = color;
+	}
 }
 
 int	pixel_get(t_render *r, int x, int y)
@@ -147,7 +150,7 @@ void	init_threads(t_render *r)
 	{
 		j = -1;
 		th = malloc(sizeof(t_thstr));
-		th->num = 100;
+		th->num = 10;
 		th->id = k;
 		th->ants = &r->ants[i];
 		th->r = r;
@@ -156,16 +159,17 @@ void	init_threads(t_render *r)
 			(void *)run_threads, th);
 		printf("%d.", k);
 	}
-	pthread_create(&r->thread_id[++k], NULL, (void *)evap_trail, r);
-	pthread_create(&r->thread_id[++k], NULL, (void *)disfuse, r);
+	//pthread_create(&r->thread_id[++k], NULL, (void *)evap_trail, r);
+	//pthread_create(&r->thread_id[++k], NULL, (void *)disfuse, r);
 	printf("created\n");
 	r->loaded = 0;
 }
 
 int	render_next_frame(t_render *r)
 {
-	// r->img = mlx_new_image(r->mlx, r->w, r->h);
-	// r->addr = mlx_get_data_addr(r->img, &r->bits_per_pixel, &r->line_length, &r->endian);
+	 r->img = mlx_new_image(r->mlx, r->w, r->h);
+	 r->addr = mlx_get_data_addr(r->img, &r->bits_per_pixel, &r->line_length, &r->endian);
+	 usleep(1000);
 	mlx_put_image_to_window(r->mlx, r->mlx_win, r->img, 0, 0);
 	return (1);
 }

@@ -12,9 +12,12 @@
 
 #include "so_long.h"
 
-float	sense(t_render *r, t_ant *ant, int x, int y, int size)
+float	sense(t_render *r, t_ant *ant, float angle, int size, float dist)
 {
-	float	sum = 0;
+	float	SAngle 	= ant->dir + angle;
+	int		sx 		= ant->x + cos((ant->dir * 3.14 / 180) + SAngle) * dist;
+	int		sy 		= ant->y + sin((ant->dir * 3.14 / 180) + SAngle) * dist;
+	float	sum		= 0;
 	int		px;
 	int		py;
 
@@ -22,9 +25,13 @@ float	sense(t_render *r, t_ant *ant, int x, int y, int size)
 	{
 		for (int offsety = -size; offsety <= size; offsety++)
 		{
-			px = x + offsetX;
-			py = y + offsety;
+			px = sx + offsetX;
+			py = sy + offsety;
 			sum += pixel_get(r, px, py);
+			if (angle > 0)
+				pixel_put(r, px, py, 0x00FF0000);
+			else
+				pixel_put(r, px, py, 0x0000FF00);
 		}
 	}
 	return (sum);
@@ -71,25 +78,26 @@ void	run_ant(t_ant *ant, t_render *r)
 {
 	float	left;
 	float	right;
-	float	ford;
+	float	ford = 0;
 	float	turnSpeed = 9000;
-	double	steps = .5;
-	int		spacing = 5;
+	double	angle = 5;
+	double	steps = .1;
 	int		distance = 5;
-	int		size = 5;
+	int		size = 1;
 
 	ant->x += steps * cos(ant->dir * 3.14 / 180);
 	ant->y += steps * sin(ant->dir * 3.14 / 180);
 	open_box(ant, r);
-	ford = sense(r, ant, ant->x + steps * cos(ant->dir * 3.14 / 180), ant->y + steps * sin(ant->dir * 3.14 / 180) + distance, size);
-	left = sense(r, ant, ant->x + steps * cos(ant->dir * 3.14 / 180) - spacing, ant->y + steps * sin(ant->dir * 3.14 / 180) + distance, size);
-	right = sense(r, ant, ant->x + steps * cos(ant->dir * 3.14 / 180) + spacing, ant->y + steps * sin(ant->dir * 3.14 / 180) + distance, size);
-	if (ford > right && ford > left)
-		ant->dir += 0;
-	else if (right > left)
-		ant->dir -=  right / turnSpeed;
-	else if (right < left)
-		ant->dir += left / turnSpeed;
+	//ford = sense(r, ant, 0, size, distance);
+	left = sense(r, ant, angle, size, distance);
+	right = sense(r, ant, -angle, size, distance);
+	// if (ford > right && ford > left)
+	// 	ant->dir += 0;
+	// else if (right > left)
+	// 	ant->dir -=  2;//right / turnSpeed;
+	// else if (right < left)
+	// 	ant->dir += 2;//left / turnSpeed;
+	ant->dir += 0.1;
 	//ant->dir += (left - right) / 10;
 	pixel_put(r, ant->x, ant->y, 0x000000FF);
 }
