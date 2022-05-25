@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgobbett <jgobbett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 12:29:19 by jgobbett          #+#    #+#             */
-/*   Updated: 2022/05/25 16:39:28 by jgobbett         ###   ########.fr       */
+/*   Updated: 2022/05/25 19:50:44 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,8 @@ void		render_new_frame(t_render *r); // this is what draws the next frame
 void		run_ant(t_ant *ant, t_render *r);
 int			ft_atoi(const char *str);
 int			dist(int fx, int fy, int sx, int sy);
+void		pixel_put(t_render *r, int x, int y, int color);
+int			pixel_get(t_render *r, int x, int y);
+void	run_ant(t_ant *ant, t_render *r);
 
 #endif

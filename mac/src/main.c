@@ -3,20 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgobbett <jgobbett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 05:57:49 by jgobbett          #+#    #+#             */
-/*   Updated: 2022/05/25 18:38:03 by jgobbett         ###   ########.fr       */
+/*   Updated: 2022/05/25 19:50:52 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx.h"
 #include "so_long.h"
-
-int	create_trgb(unsigned char t, unsigned char r, unsigned char g, unsigned char b)
-{
-	return (*(int *)(unsigned char [4]){b, g, r, t});
-}
 
 int	keypress(int k, t_render *r)
 {
@@ -71,53 +66,6 @@ void	disfuse(t_render *r)
 		}
 		//usleep(100000);
 	}
-}
-
-float	sense(t_ant *ant, int x, int y)
-{
-	float	sum = 0;
-	float	size = 3;
-
-	for (int o)
-	return (sum);
-}
-
-void	run_ant(t_ant *ant, t_render *r)
-{
-	double	steps = 1;
-	int	left;
-	int	right;
-
-	ant->x += steps * cos(ant->dir * 3.14 / 180);
-	ant->y += steps * sin(ant->dir * 3.14 / 180);
-	//pixel_put(r, ant->x + steps * cos(ant->dir * 3.14 / 180) + 2, ant->y + steps * sin(ant->dir * 3.14 / 180) + 2, 0x00FF0000);
-	//pixel_put(r, ant->x + steps * cos(ant->dir * 3.14 / 180) - 2, ant->y + steps * sin(ant->dir * 3.14 / 180) + 2, 0x0000FF00);
-	// if (ant->x < 10 || ant->x > r->w - 10)
-	// {
-	// 	ant->dir = 180 - ant->dir;
-	// 	ant->x += steps * cos(ant->dir * 3.14 / 180);
-	// 	ant->y += steps * sin(ant->dir * 3.14 / 180);
-	// }
-	// else if (ant->y < 10 || ant->y > r->h - 10)
-	// {
-	// 	ant->dir = 360 - ant->dir;
-	// 	ant->x += steps * cos(ant->dir * 3.14 / 180);
-	// 	ant->y += steps * sin(ant->dir * 3.14 / 180);
-	// }
-	if (ant->x < 10)
-		ant->x = r->w - 15;
-	else if (ant->x > r->w - 10)
-		ant->x = 15;
-	else if (ant->y < 10)
-		ant->y = r->h - 15;
-	else if (ant->y > r->h - 10)
-		ant->y = 15;
-	// if (dist(ant->x, ant->y, 500, 500) > 500)
-	// 	ant->dir += 180;//(rand() % 50);
-	left = pixel_get(r, ant->x + steps * cos(ant->dir * 3.14 / 180) - 3, ant->y + steps * sin(ant->dir * 3.14 / 180) + 2);
-	right = pixel_get(r, ant->x + steps * cos(ant->dir * 3.14 / 180) + 3, ant->y + steps * sin(ant->dir * 3.14 / 180) + 2);
-	ant->dir += (left - right) / 10;
-	pixel_put(r, ant->x, ant->y, 0x000000FF);
 }
 
 t_ant	*spawn_ant(t_render *r, int num)

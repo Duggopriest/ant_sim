@@ -19,3 +19,6 @@ gitset:
 	git branch -M main
 	git remote add origin $(REPO)
 	git push -u origin main
+
+test:
+	@echo working
