@@ -14,7 +14,7 @@ all:
 	@echo -n Compiling ant_sim...
 	@gcc $(SRC) $(FLAGS) -o $(NAME)
 	@echo Done
-	./ant 100
+	./ant 100000
 
 LIBXLINUX = minilibx-linux
 LIBSLINUX = minilibx-linux/libmlx.a -L$(LIBXLINUX)

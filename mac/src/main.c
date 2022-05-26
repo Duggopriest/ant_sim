@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgobbett <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jgobbett <jgobbett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 05:57:49 by jgobbett          #+#    #+#             */
-/*   Updated: 2022/05/25 15:16:19 by jgobbett         ###   ########.fr       */
+/*   Updated: 2022/05/26 12:24:24 by jgobbett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,8 @@ void	pixel_put(t_render *r, int x, int y, int color)
 {
 	char	*dst;
 
-	if (x > 0 && y > 0 && x < r->w && y < r->h)
-	{
-		dst = r->addr + (y * r->line_length + x * (r->bits_per_pixel / 8));
-		*(unsigned int *)dst = color;
-	}
+	dst = r->addr + (y * r->line_length + x * (r->bits_per_pixel / 8));
+	*(unsigned int *)dst = color;
 }
 
 int	pixel_get(t_render *r, int x, int y)
@@ -67,7 +64,7 @@ void	disfuse(t_render *r)
 			}
 			i += 1;
 		}
-		//usleep(100000);
+		//usleep(50000);
 	}
 }
 
@@ -79,17 +76,11 @@ t_ant	*spawn_ant(t_render *r, int num)
 
 	ants = malloc(sizeof(t_ant) * num);
 	i = -1;
-	while (++i < num / 2)
-	{
-		ants[i].x = 500;//(rand() % 950) + 10;
-		ants[i].y = 500;//(rand() % 950) + 10;
-		ants[i].dir = i;
-	}
 	while (++i < num)
 	{
-		ants[i].x = 600;//(rand() % 1950) + 10;
-		ants[i].y = 600;//(rand() % 1450) + 10;
-		ants[i].dir = rand();
+		ants[i].x = (rand() % 900) + 50;
+		ants[i].y = (rand() % 900) + 50;
+		ants[i].dir = i;
 	}
 	return (ants);
 }
@@ -114,7 +105,7 @@ void	evap_trail(t_render *r)
 				pixel_put(r, j, i, color);
 			}
 		}
-		usleep(100);
+		usleep(1000);
 	}
 }
 
@@ -130,7 +121,7 @@ void	run_threads(t_thstr *th)
 		i = -1;
 		while (++i < th->num)
 			run_ant(&th->ants[i], th->r);
-		usleep(5000);
+		usleep(1000);
 	}
 }
 
@@ -150,7 +141,7 @@ void	init_threads(t_render *r)
 	{
 		j = -1;
 		th = malloc(sizeof(t_thstr));
-		th->num = 10;
+		th->num = r->ant_num / r->num_threads;
 		th->id = k;
 		th->ants = &r->ants[i];
 		th->r = r;
@@ -159,20 +150,32 @@ void	init_threads(t_render *r)
 			(void *)run_threads, th);
 		printf("%d.", k);
 	}
-	//pthread_create(&r->thread_id[++k], NULL, (void *)evap_trail, r);
-	//pthread_create(&r->thread_id[++k], NULL, (void *)disfuse, r);
+	pthread_create(&r->thread_id[++k], NULL, (void *)evap_trail, r);
+	pthread_create(&r->thread_id[++k], NULL, (void *)disfuse, r);
 	printf("created\n");
 	r->loaded = 0;
 }
 
+void	putline(t_render *r)
+{
+	int	i;
+
+	i = 0;
+	while (++i < 1000)
+	{
+		pixel_put(r, i, 600, 0x000000FF);
+	}
+}
 int	render_next_frame(t_render *r)
 {
-	 r->img = mlx_new_image(r->mlx, r->w, r->h);
-	 r->addr = mlx_get_data_addr(r->img, &r->bits_per_pixel, &r->line_length, &r->endian);
-	 usleep(1000);
+	 //r->img = mlx_new_image(r->mlx, r->w, r->h);
+	 //r->addr = mlx_get_data_addr(r->img, &r->bits_per_pixel, &r->line_length, &r->endian);
+	 //putline(r);
+	//usleep(100);
 	mlx_put_image_to_window(r->mlx, r->mlx_win, r->img, 0, 0);
 	return (1);
 }
+
 
 int	main(int argc, const char **argv)
 {
@@ -181,7 +184,7 @@ int	main(int argc, const char **argv)
 	if (argc != 2)
 		return (0);
 	r = malloc(sizeof(t_render));
-	r->num_threads = 10;
+	r->num_threads = 20;
 	r->ant_num = ft_atoi(argv[1]);
 	r->ants = spawn_ant(r, r->ant_num);
 	r->w = 1000;
