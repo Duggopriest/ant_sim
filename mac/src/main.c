@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 05:57:49 by jgobbett          #+#    #+#             */
-/*   Updated: 2022/05/27 20:27:27 by marvin           ###   ########.fr       */
+/*   Updated: 2022/05/27 20:29:20 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,16 @@ void	take_input(t_render *r)
 		printf("4 | distance		=	%d\n", r->distance);
 		printf("5 | speed			=	%d\n", r->speed);
 		scanf("%d", &in);
-		if (in )
+		if (in == 1)
+			r->turnSpeed = in;
+		if (in == 2)
+			r->angle = in;
+		if (in == 3)
+			r->steps = in;
+		if (in == 4)
+			r->distance = in;
+		if (in == 5)
+			r->speed = in;
 }
 
 int	render_next_frame(t_render *r)
