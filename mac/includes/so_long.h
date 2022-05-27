@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgobbett <jgobbett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 12:29:19 by jgobbett          #+#    #+#             */
-/*   Updated: 2022/05/26 12:21:14 by jgobbett         ###   ########.fr       */
+/*   Updated: 2022/05/27 20:25:57 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,12 @@ typedef struct s_render {
 	int			bits_per_pixel;
 	int			line_length;
 	int			endian;
+	float		turnSpeed;
+	double		angle;
+	double		steps;
+	int			distance;
+	int			size;
+	int			speed;
 }	t_render;
 
 int			keypress(int keycode, t_render *r); // uses the key presses

@@ -37,20 +37,20 @@ float	sense(t_render *r, t_ant *ant, float angle, int size, float dist)
 	return (sum);
 }
 
+int randomRange(int min, int max){
+   return min + rand() / (RAND_MAX / (max - min + 1) + 1);
+}
+
 void	box(t_ant *ant, t_render *r)
 {
-	if (ant->x < 10 || ant->x > r->w - 10)
-	{
-		ant->dir = 180 - ant->dir;
-		ant->x += cos(ant->dir * 3.14 / 180);
-		ant->y += sin(ant->dir * 3.14 / 180);
-	}
-	else if (ant->y < 10 || ant->y > r->h - 10)
-	{
-		ant->dir = 360 - ant->dir;
-		ant->x += cos(ant->dir * 3.14 / 180);
-		ant->y += sin(ant->dir * 3.14 / 180);
-	}
+	if (ant->x < 10)
+		ant->dir = randomRange(-85, 85);
+	else if (ant->x > r->w - 10)
+		ant->dir = randomRange(-265, 265);
+	else if (ant->y < 10)
+		ant->dir = randomRange(-5, 175);
+	else if (ant->y > r->h - 10)
+		ant->dir = randomRange(-185, 5);
 }
 
 void	open_box(t_ant *ant, t_render *r)
@@ -97,11 +97,6 @@ void	run_ant(t_ant *ant, t_render *r)
 	float	left;
 	float	right;
 	float	ford = 0;
-	float	turnSpeed = 9000;
-	double	angle = 30;
-	double	steps = 1;
-	int		distance = 35;
-	int		size = 1;
 
 	ant->x += steps * cos(ant->dir * 3.14 / 180);
 	ant->y += steps * sin(ant->dir * 3.14 / 180);

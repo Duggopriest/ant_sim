@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jgobbett <jgobbett@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 05:57:49 by jgobbett          #+#    #+#             */
-/*   Updated: 2022/05/26 12:24:24 by jgobbett         ###   ########.fr       */
+/*   Updated: 2022/05/27 20:27:27 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void	run_threads(t_thstr *th)
 		i = -1;
 		while (++i < th->num)
 			run_ant(&th->ants[i], th->r);
-		usleep(1000);
+		usleep(th->r->speed * 1000);
 	}
 }
 
@@ -166,16 +166,30 @@ void	putline(t_render *r)
 		pixel_put(r, i, 600, 0x000000FF);
 	}
 }
+
+void	take_input(t_render *r)
+{
+	int	in;
+	while (1)
+	{
+		printf("1 | turn speed		=	%d\n", r->turnSpeed);
+		printf("2 | angle			=	%d\n", r->angle);
+		printf("3 | steps			=	%d\n", r->steps);
+		printf("4 | distance		=	%d\n", r->distance);
+		printf("5 | speed			=	%d\n", r->speed);
+		scanf("%d", &in);
+		if (in )
+}
+
 int	render_next_frame(t_render *r)
 {
-	 //r->img = mlx_new_image(r->mlx, r->w, r->h);
-	 //r->addr = mlx_get_data_addr(r->img, &r->bits_per_pixel, &r->line_length, &r->endian);
-	 //putline(r);
+	//r->img = mlx_new_image(r->mlx, r->w, r->h);
+	//r->addr = mlx_get_data_addr(r->img, &r->bits_per_pixel, &r->line_length, &r->endian);
+	//putline(r);
 	//usleep(100);
 	mlx_put_image_to_window(r->mlx, r->mlx_win, r->img, 0, 0);
 	return (1);
 }
-
 
 int	main(int argc, const char **argv)
 {
@@ -189,6 +203,11 @@ int	main(int argc, const char **argv)
 	r->ants = spawn_ant(r, r->ant_num);
 	r->w = 1000;
 	r->h = 1000;
+	r->turnSpeed = 9000;
+	r->angle = 30;
+	r->steps = 1;
+	r->distance = 35;
+	r->size = 1;
 	r->mlx = mlx_init();
 	r->mlx_win = mlx_new_window(r->mlx, r->w, r->h, "ant_sim"); // uses grid to change the resolution and adds padding
 	r->img = mlx_new_image(r->mlx, r->w, r->h);

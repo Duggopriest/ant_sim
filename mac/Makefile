@@ -12,7 +12,7 @@ all:
 	@make -s -C $(LIBX)
 	@echo Done
 	@echo -n Compiling ant_sim...
-	@gcc $(SRC) $(FLAGS) -o $(NAME)
+	@c $(SRC) $(FLAGS) -o $(NAME)
 	@echo Done
 	./ant 100000
 
