@@ -1,16 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ant.c                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/25 19:50:55 by marvin            #+#    #+#             */
-/*   Updated: 2022/05/26 13:52:34 by jgobbett         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "so_long.h"
+#include "ant_sim.h"
 
 float	sense(t_render *r, t_ant *ant, float angle, int size, float dist)
 {
@@ -28,10 +16,6 @@ float	sense(t_render *r, t_ant *ant, float angle, int size, float dist)
 			px = sx + offsetX;
 			py = sy + offsety;
 			sum += pixel_get(r, px, py);
-			// if (angle > 0)
-			// 	pixel_put(r, px, py, 0x00FF0000);
-			// else
-			// 	pixel_put(r, px, py, 0x0000FF00);
 		}
 	}
 	return (sum);
@@ -68,14 +52,11 @@ void	open_box(t_ant *ant, t_render *r)
 void	circle(t_ant *ant)
 {
 	if (dist(ant->x, ant->y, 500, 500) > 500)
-	{	//ant->dir += 180;//(rand() % 50);
+	{
 		ant->x = 500;
 		ant->y = 500;
 	}
 }
-
-//pixel_put(r, ant->x + steps * cos(ant->dir * 3.14 / 180) + 2, ant->y + steps * sin(ant->dir * 3.14 / 180) + 2, 0x00FF0000);
-//pixel_put(r, ant->x + steps * cos(ant->dir * 3.14 / 180) - 2, ant->y + steps * sin(ant->dir * 3.14 / 180) + 2, 0x0000FF00);
 
 void	draw_square(int	x, int y, int size, t_render *r)
 {
@@ -96,23 +77,24 @@ void	run_ant(t_ant *ant, t_render *r)
 {
 	float	left;
 	float	right;
-	float	ford = 0;
+	float	ford;
 
 	ant->x += steps * cos(ant->dir * 3.14 / 180);
 	ant->y += steps * sin(ant->dir * 3.14 / 180);
-	//open_box(ant, r);
-	circle(ant);
+	if (r->box_type == 1)
+		open_box(ant, r);
+	else if (r->box_type == 2)
+		box(ant, r);
+	else if (r->box_type == 3)
+		circle(ant);
 	ford = sense(r, ant, 0, size, distance);
 	left = sense(r, ant, angle, size, distance);
 	right = sense(r, ant, -angle, size, distance);
 	if (ford > right && ford > left)
 		ant->dir += 0;
 	else if (right > left)
-		ant->dir -=  2;//right / turnSpeed;
+		ant->dir -= r->turnspeed;
 	else if (right < left)
-		ant->dir += 2;//left / turnSpeed;
-	ant->dir += 0.1;
-	//ant->dir += (left - right) / 10;
-	//draw_square(ant->x, ant->y, 4, r);
+		ant->dir += r->turnspeed;
 	pixel_put(r, ant->x, ant->y, 0x000000FF);
 }

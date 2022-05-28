@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_long.h                                          :+:      :+:    :+:   */
+/*   ant_sim.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 12:29:19 by jgobbett          #+#    #+#             */
-/*   Updated: 2022/05/27 20:25:57 by marvin           ###   ########.fr       */
+/*   Updated: 2022/05/28 16:30:32 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SO_LONG_H
-# define SO_LONG_H
+#ifndef ANT_SIM_H
+# define ANT_SIM_H
 
 # include "mlx.h"
 # include <unistd.h>
@@ -39,37 +39,50 @@ typedef struct s_thstr
 
 // holds the everything so I can pass this as a semi global var
 typedef struct s_render {
+	
 	int			sync;
 	int			loaded;
+	int			ant_num;
 	int			num_threads;
 	pthread_t	*thread_id;
-	void		*mlx;
-	void		*mlx_win;
+
 	int			h;
 	int			w;
-	t_ant		*ants;
-	int			ant_num;
+	void		*mlx;
+	void		*mlx_win;
+
 	void		*img;
 	char		*addr;
-	int			bits_per_pixel;
-	int			line_length;
 	int			endian;
-	float		turnSpeed;
+	int			line_length;
+	int			bits_per_pixel;
+
+	t_ant		*ants;
+	int			size;
+	int			evap;
 	double		angle;
+	int			speed;
 	double		steps;
 	int			distance;
-	int			size;
-	int			speed;
+	int			ant_only;
+	int			box_type;
+	float		turnSpeed;
+
 }	t_render;
 
-int			keypress(int keycode, t_render *r); // uses the key presses
-int			render_next_frame(t_render *render); // this makes the window draw new frames you give it
-void		render_new_frame(t_render *r); // this is what draws the next frame
-void		run_ant(t_ant *ant, t_render *r);
 int			ft_atoi(const char *str);
-int			dist(int fx, int fy, int sx, int sy);
-void		pixel_put(t_render *r, int x, int y, int color);
+int			keypress(int keycode, t_render *r);
+int			render_next_frame(t_render *render);
+void		render_new_frame(t_render *r);
+
+void		disfuse(t_render *r);
+void		evap_trail(t_render *r)
 int			pixel_get(t_render *r, int x, int y);
-void	run_ant(t_ant *ant, t_render *r);
+void		pixel_put(t_render *r, int x, int y, int color);
+
+void		run_threads(t_thstr *th);
+void		init_threads(t_render *r);
+void		run_ant(t_ant *ant, t_render *r);
+int			dist(int fx, int fy, int sx, int sy);
 
 #endif
