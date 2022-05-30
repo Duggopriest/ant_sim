@@ -14,14 +14,15 @@ t_ant	*spawn_ant(t_render *r, int num)
 	int		j;
 	t_ant	*ants;
 
-	ants = malloc(sizeof(t_ant) * num);
+	ants = malloc(sizeof(t_ant) * num + 1);
 	i = -1;
 	while (++i < num)
 	{
-		ants[i].x = 500;//(rand() % 900) + 50;
-		ants[i].y = 500;//(rand() % 900) + 50;
+		ants[i].x = (rand() % 900) + 50;
+		ants[i].y = (rand() % 900) + 50;
 		ants[i].dir = i;
 	}
+	printf("ants spawned\n");
 	return (ants);
 }
 
@@ -32,61 +33,80 @@ void	take_input(t_render *r)
 	int	in;
 	while (1)
 	{
-		printf("0 | EXIT\n",);
-		printf("1 | turn speed		=	%d\n", r->turnSpeed);
-		printf("2 | angle			=	%d\n", r->angle);
-		printf("3 | steps			=	%d\n", r->steps);
+		system("clear");
+		printf("0 | EXIT\n");
+		printf("1 | turn speed		=	%f\n", r->turnSpeed);
+		printf("2 | angle		=	%f\n", r->angle);
+		printf("3 | steps		=	%f\n", r->steps);
 		printf("4 | distance		=	%d\n", r->distance);
-		printf("5 | speed			=	%d\n", r->speed);
+		printf("5 | slow		=	%d\n", r->speed);
 		printf("6 | box config		=	%d\n", r->box_type);
 		printf("7 | toggle trail	=	%d\n", r->ant_only);
+		printf("8 | evap amount		=	%f\n", r->evap);
 		scanf("%d", &in);
 		printf("enter new int\n");
 		if (in == 0)
+		{
+			system("clear");
 			exit(0);
+		}
 		else if (in == 1)
 		{
 			scanf("%d", &in);
 			r->turnSpeed = in;
 		}
-		if (in == 2)
+		else if (in == 2)
 		{
 			scanf("%d", &in);
 			r->angle = in;
 		}
-		if (in == 3)
+		else if (in == 3)
 		{
 			scanf("%d", &in);
 			r->steps = in;
 		}
-		if (in == 4)
+		else if (in == 4)
 		{
 			scanf("%d", &in);
 			r->distance = in;
 		}
-		if (in == 5)
+		else if (in == 5)
 		{
 			scanf("%d", &in);
 			r->speed = in;
 		}
-		if (in == 6)
+		else if (in == 6)
 		{
 			system("clear");
 			printf("box config\n");
 			printf("1 | open\n");
 			printf("2 | box\n");
 			printf("3 | circle\n");
+			printf("4 | circle Bounce\n");
 			scanf("%d", &in);
 			r->box_type = in;
 		}
-		if (in == 7)
-			r->ant_num *= -(1);
+		else if (in == 7)
+		{
+			scanf("%d", &in);
+			r->ant_only = in;
+		}
+		else if (in == 8)
+		{
+			scanf("%d", &in);
+			r->evap = in;
+		}
 	}
 }
 
 int	render_next_frame(t_render *r)
 {
-	if (r->ant_only)
+	if (r->loaded)
+	{
+		usleep(100000);
+		r->loaded = 0;
+	}
+	if (r->ant_only == 1)
 	{
 		r->img = mlx_new_image(r->mlx, r->w, r->h);
 		r->addr = mlx_get_data_addr(r->img, &r->bits_per_pixel, &r->line_length, &r->endian);
@@ -111,7 +131,7 @@ int	main(int argc, const char **argv)
 	r->size = 1;
 	r->steps = 1;
 	r->angle = 30;
-	r->box_type = 1;
+	r->box_type = 2;
 	r->ant_only = -1;
 	r->distance = 35;
 	r->turnSpeed = 2;

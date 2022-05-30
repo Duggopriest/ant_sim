@@ -22,27 +22,31 @@ void	init_threads(t_render *r)
 	int		j;
 	int		k;
 	t_thstr	*th;
+	int		numants = (r->ant_num * 0.10);
 
 	r->loaded = 1;
-	r->thread_id = malloc(sizeof(pthread_t) * r->num_threads + 2);
+	r->thread_id = malloc(sizeof(pthread_t) * r->num_threads + 3);
 	i = 0;
 	k = -1;
+	printf("%i ants per thread\n", numants);
 	printf("thread ");
 	while (++k < r->num_threads)
 	{
 		j = -1;
 		th = malloc(sizeof(t_thstr));
-		th->num = r->ant_num / r->num_threads;
+		th->num = numants;
 		th->id = k;
 		th->ants = &r->ants[i];
+		i += numants;
 		th->r = r;
-		i += th->num;
+
 		pthread_create(&r->thread_id[k], NULL,
 			(void *)run_threads, th);
 		printf("%d.", k);
 	}
 	pthread_create(&r->thread_id[++k], NULL, (void *)evap_trail, r);
 	pthread_create(&r->thread_id[++k], NULL, (void *)disfuse, r);
+	pthread_create(&r->thread_id[++k], NULL, (void *)take_input, r);
 	printf("created\n");
-	r->loaded = 0;
+	usleep(1000);
 }

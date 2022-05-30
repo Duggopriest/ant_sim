@@ -58,6 +58,18 @@ void	circle(t_ant *ant)
 	}
 }
 
+void	circleBounce(t_ant *ant, t_render *r)
+{
+	if (dist(ant->x, ant->y, 500, 500) == 500)
+		ant->dir += 180 + randomRange(-80, 80);
+	if (dist(ant->x, ant->y, 500, 500) > 500)
+	{
+		ant->dir += 180;
+		ant->x += r->steps * cos(ant->dir * 3.14 / 180);
+		ant->y += r->steps * sin(ant->dir * 3.14 / 180);
+	}
+}
+
 void	draw_square(int	x, int y, int size, t_render *r)
 {
 	int	i;
@@ -79,22 +91,24 @@ void	run_ant(t_ant *ant, t_render *r)
 	float	right;
 	float	ford;
 
-	ant->x += steps * cos(ant->dir * 3.14 / 180);
-	ant->y += steps * sin(ant->dir * 3.14 / 180);
+	ant->x += r->steps * cos(ant->dir * 3.14 / 180);
+	ant->y += r->steps * sin(ant->dir * 3.14 / 180);
 	if (r->box_type == 1)
 		open_box(ant, r);
 	else if (r->box_type == 2)
 		box(ant, r);
 	else if (r->box_type == 3)
 		circle(ant);
-	ford = sense(r, ant, 0, size, distance);
-	left = sense(r, ant, angle, size, distance);
-	right = sense(r, ant, -angle, size, distance);
+	else
+		circleBounce(ant, r);
+	ford = sense(r, ant, 0, r->size, r->distance);
+	left = sense(r, ant, r->angle, r->size, r->distance);
+	right = sense(r, ant, -r->angle, r->size, r->distance);
 	if (ford > right && ford > left)
 		ant->dir += 0;
 	else if (right > left)
-		ant->dir -= r->turnspeed;
+		ant->dir -= r->turnSpeed;
 	else if (right < left)
-		ant->dir += r->turnspeed;
+		ant->dir += r->turnSpeed;
 	pixel_put(r, ant->x, ant->y, 0x000000FF);
 }

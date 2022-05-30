@@ -52,9 +52,11 @@ void	evap_trail(t_render *r)
 	int	i;
 	int	j;
 	int	color;
+	float sum;
 
 	while (1)
 	{
+		sum = (0.01 * r->evap) + 1;
 		i = -1;
 		while (++i < r->h)
 		{
@@ -63,7 +65,7 @@ void	evap_trail(t_render *r)
 			{
 				color = pixel_get(r, j, i);
 				if (color > 0)
-					color /= (0.01 * r->evap);
+					color /= sum;
 				pixel_put(r, j, i, color);
 			}
 		}

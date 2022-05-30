@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ant_sim.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jgobbett <jgobbett@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/21 12:29:19 by jgobbett          #+#    #+#             */
-/*   Updated: 2022/05/28 16:30:32 by marvin           ###   ########.fr       */
+/*   Updated: 2022/05/30 12:18:05 by jgobbett         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ typedef struct s_render {
 
 	t_ant		*ants;
 	int			size;
-	int			evap;
+	float		evap;
 	double		angle;
 	int			speed;
 	double		steps;
@@ -74,9 +74,10 @@ int			ft_atoi(const char *str);
 int			keypress(int keycode, t_render *r);
 int			render_next_frame(t_render *render);
 void		render_new_frame(t_render *r);
+void		take_input(t_render *r);
 
 void		disfuse(t_render *r);
-void		evap_trail(t_render *r)
+void		evap_trail(t_render *r);
 int			pixel_get(t_render *r, int x, int y);
 void		pixel_put(t_render *r, int x, int y, int color);
 
