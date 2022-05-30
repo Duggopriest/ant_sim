@@ -9,6 +9,13 @@ float	sense(t_render *r, t_ant *ant, float angle, int size, float dist)
 	int		px;
 	int		py;
 
+	if (size == 0)
+	{
+		px = sx;
+		py = sy;
+		sum += pixel_get(r, px, py);
+		return (sum);
+	}
 	for (int offsetX = -size; offsetX <= size; offsetX++)
 	{
 		for (int offsety = -size; offsety <= size; offsety++)
@@ -105,10 +112,10 @@ void	run_ant(t_ant *ant, t_render *r)
 	left = sense(r, ant, r->angle, r->size, r->distance);
 	right = sense(r, ant, -r->angle, r->size, r->distance);
 	if (ford > right && ford > left)
-		ant->dir += 0;
+		ant->dir +=  + randomRange(-2, 2);
 	else if (right > left)
-		ant->dir -= r->turnSpeed;
+		ant->dir -= r->turnSpeed + randomRange(-2, 2);
 	else if (right < left)
-		ant->dir += r->turnSpeed;
+		ant->dir += r->turnSpeed + randomRange(-2, 2);
 	pixel_put(r, ant->x, ant->y, 0x000000FF);
 }

@@ -18,8 +18,8 @@ t_ant	*spawn_ant(t_render *r, int num)
 	i = -1;
 	while (++i < num)
 	{
-		ants[i].x = (rand() % 900) + 50;
-		ants[i].y = (rand() % 900) + 50;
+		ants[i].x = 500;//(rand() % 900) + 50;
+		ants[i].y = 500;//(rand() % 900) + 50;
 		ants[i].dir = i;
 	}
 	printf("ants spawned\n");
@@ -30,7 +30,7 @@ t_ant	*spawn_ant(t_render *r, int num)
 
 void	take_input(t_render *r)
 {
-	int	in;
+	float	in;
 	while (1)
 	{
 		system("clear");
@@ -43,7 +43,7 @@ void	take_input(t_render *r)
 		printf("6 | box config		=	%d\n", r->box_type);
 		printf("7 | toggle trail	=	%d\n", r->ant_only);
 		printf("8 | evap amount		=	%f\n", r->evap);
-		scanf("%d", &in);
+		scanf("%f", &in);
 		printf("enter new int\n");
 		if (in == 0)
 		{
@@ -52,27 +52,27 @@ void	take_input(t_render *r)
 		}
 		else if (in == 1)
 		{
-			scanf("%d", &in);
+			scanf("%f", &in);
 			r->turnSpeed = in;
 		}
 		else if (in == 2)
 		{
-			scanf("%d", &in);
+			scanf("%f", &in);
 			r->angle = in;
 		}
 		else if (in == 3)
 		{
-			scanf("%d", &in);
+			scanf("%f", &in);
 			r->steps = in;
 		}
 		else if (in == 4)
 		{
-			scanf("%d", &in);
+			scanf("%f", &in);
 			r->distance = in;
 		}
 		else if (in == 5)
 		{
-			scanf("%d", &in);
+			scanf("%f", &in);
 			r->speed = in;
 		}
 		else if (in == 6)
@@ -83,17 +83,17 @@ void	take_input(t_render *r)
 			printf("2 | box\n");
 			printf("3 | circle\n");
 			printf("4 | circle Bounce\n");
-			scanf("%d", &in);
+			scanf("%f", &in);
 			r->box_type = in;
 		}
 		else if (in == 7)
 		{
-			scanf("%d", &in);
+			scanf("%f", &in);
 			r->ant_only = in;
 		}
 		else if (in == 8)
 		{
-			scanf("%d", &in);
+			scanf("%f", &in);
 			r->evap = in;
 		}
 	}
@@ -127,14 +127,14 @@ int	main(int argc, const char **argv)
 	r->ant_num = ft_atoi(argv[1]);
 	r->ants = spawn_ant(r, r->ant_num);
 
-	r->evap = 5;
-	r->size = 1;
+	r->evap = .5;
+	r->size = 0;
 	r->steps = 1;
 	r->angle = 30;
-	r->box_type = 2;
+	r->box_type = 4;
 	r->ant_only = -1;
 	r->distance = 35;
-	r->turnSpeed = 2;
+	r->turnSpeed = 1;
 
 	r->w = 1000;
 	r->h = 1000;
