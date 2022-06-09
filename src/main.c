@@ -129,7 +129,7 @@ int	main(int argc, const char **argv)
 
 	r->evap = 10;
 	r->size = 0;
-	r->steps = 1;
+	r->steps = .1;
 	r->angle = 30;
 	r->box_type = 2;
 	r->ant_only = -1;

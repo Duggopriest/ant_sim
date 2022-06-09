@@ -16,6 +16,8 @@ float	sense(t_render *r, t_ant *ant, float angle, int size, float dist)
 		sum += pixel_get(r, px, py);
 		return (sum);
 	}
+	else if (size < 0)
+		return (0);
 	for (int offsetX = -size; offsetX <= size; offsetX++)
 	{
 		for (int offsety = -size; offsety <= size; offsety++)
