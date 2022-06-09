@@ -18,8 +18,8 @@ t_ant	*spawn_ant(t_render *r, int num)
 	i = -1;
 	while (++i < num)
 	{
-		ants[i].x = 500;//(rand() % 900) + 50;
-		ants[i].y = 500;//(rand() % 900) + 50;
+		ants[i].x = (rand() % 900) + 50;
+		ants[i].y = (rand() % 900) + 50;
 		ants[i].dir = i;
 	}
 	printf("ants spawned\n");
@@ -127,11 +127,11 @@ int	main(int argc, const char **argv)
 	r->ant_num = ft_atoi(argv[1]);
 	r->ants = spawn_ant(r, r->ant_num);
 
-	r->evap = .5;
+	r->evap = 10;
 	r->size = 0;
 	r->steps = 1;
 	r->angle = 30;
-	r->box_type = 4;
+	r->box_type = 2;
 	r->ant_only = -1;
 	r->distance = 35;
 	r->turnSpeed = 1;

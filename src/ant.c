@@ -67,6 +67,7 @@ void	circle(t_ant *ant)
 
 void	circleBounce(t_ant *ant, t_render *r)
 {
+	circle(ant);
 	if (dist(ant->x, ant->y, 500, 500) == 500)
 		ant->dir += 180 + randomRange(-80, 80);
 	if (dist(ant->x, ant->y, 500, 500) > 500)
